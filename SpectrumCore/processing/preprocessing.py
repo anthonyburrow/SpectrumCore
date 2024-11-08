@@ -6,19 +6,21 @@ from ..physics.telluric import remove_telluric
 # from ..physics.mangle import mangle
 
 
-def preprocess(*args, **kwargs) -> np.ndarray:
-    data = remove_nans(*args, **kwargs)
-    data = remove_nonpositive(*args, **kwargs)
+def preprocess(data: np.ndarray, *args, **kwargs) -> np.ndarray:
+    # Default functions
+    data = remove_nans(data, *args, **kwargs)
+    data = remove_nonpositive(data, *args, **kwargs)
 
-    # TODO: Do after mangling
-    data = remove_telluric(*args, **kwargs)
-    data = deredshift(*args, **kwargs)
-    data = prune(*args, **kwargs)
+    # Non-default functions
+    # TODO: Do telluric after mangling
+    data = remove_telluric(data, *args, **kwargs)
+    data = deredshift(data, *args, **kwargs)
+    data = prune(data, *args, **kwargs)
     # TODO: Mangle
-    # data = mangle(*args, **kwargs)
-    data = deredden(*args, **kwargs)
+    # data = mangle(data, *args, **kwargs)
+    data = deredden(data, *args, **kwargs)
 
-    data = normalize(*args, **kwargs)
+    data = normalize(data, *args, **kwargs)
 
     return data
 
@@ -31,17 +33,19 @@ def remove_nans(
         return data
 
     nan_mask = ~np.isnan(data).any(axis=1)
+    print(len(data) - nan_mask.sum())
     return data[nan_mask]
 
 
 def remove_nonpositive(
-    data: np.ndarray, remove_nonpositive=True, *args, **kwargs
+    data: np.ndarray, remove_nonpositive: bool = True, *args, **kwargs
 ) -> np.ndarray:
     """Remove non-positive values."""
     if not remove_nonpositive:
         return data
 
     mask = data[:, 1] > 0.
+    print(len(data) - mask.sum())
     return data[mask]
 
 
