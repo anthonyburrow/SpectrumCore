@@ -33,7 +33,6 @@ def remove_nans(
         return data
 
     nan_mask = ~np.isnan(data).any(axis=1)
-    print(len(data) - nan_mask.sum())
     return data[nan_mask]
 
 
@@ -45,7 +44,6 @@ def remove_nonpositive(
         return data
 
     mask = data[:, 1] > 0.
-    print(len(data) - mask.sum())
     return data[mask]
 
 
