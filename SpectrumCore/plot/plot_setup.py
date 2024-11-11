@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator, FuncFormatter, NullFormatter
 
 
-PLOT_DPI = 125
+PLOT_DPI = 135
 
 
 # Setup functions
@@ -66,7 +66,7 @@ def spectrum_scale(plot, plot_type=None):
     fig, ax = plot
 
     ax.set_yscale('log')
-    if plot_type is None or plot_type == 'optical':
+    if plot_type == 'nir':
         ax.set_xscale('log')
 
 
@@ -74,7 +74,7 @@ def residual_scale(plot, plot_type=None):
     fig, ax, ax_res = plot
 
     ax.set_yscale('log')
-    if plot_type is None or plot_type == 'optical':
+    if plot_type == 'nir':
         ax.set_xscale('log')
         ax_res.set_xscale('log')
 
@@ -91,7 +91,5 @@ def setup_plot(residuals=False, plot_type=None):
 
         spectrum_labels(plot, plot_type)
         spectrum_scale(plot, plot_type)
-
-    plt.tight_layout()
 
     return plot
