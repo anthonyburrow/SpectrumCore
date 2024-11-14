@@ -13,7 +13,7 @@ setup(
     author_email='anthony.r.burrow@gmail.com',
     license='MIT',
     include_package_data=True,
-    install_requires=['numpy', 'matplotlib'],
+    install_requires=['numpy', 'scipy', 'matplotlib'],
     # optional=[],
     packages=find_packages(),
     extras_require={'test': 'pytest'},
