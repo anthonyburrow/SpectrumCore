@@ -1,2 +1,3 @@
-from .preprocessing import preprocess
 from .smooth import smooth
+
+__all__ = ['smooth']
