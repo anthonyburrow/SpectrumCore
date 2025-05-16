@@ -1,7 +1,7 @@
 # SpectrumCore
 
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/anthonyburrow/SpectrumCore/run_pytest.yml)](https://github.com/anthonyburrow/SpectrumCore/actions/workflows/run_pytest.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/anthonyburrow/SpectrumCore/run_pytest.yml)](https://github.com/anthonyburrow/SpectrumCore/actions/workflows/run_pytest.yml){:target="_blank"}
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT){:target="_blank"}
 
 **SpectrumCore** is a lightweight Python library for manipulating and analyzing
 1D astronomical spectra. It provides utilities for spectrum normalization,
