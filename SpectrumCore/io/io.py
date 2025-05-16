@@ -30,7 +30,7 @@ def _load_fits(filename: str) -> np.ndarray:
         else:
             flux = f2[0]
 
-    if not ('WAT0_001' in hdu) or hdu['WAT0_001'] == 'system=equispec':
+    if 'WAT0_001' not in hdu or hdu['WAT0_001'] == 'system=equispec':
         uflux = u.erg / (u.cm ** 2 * u.s)
 
         try:

@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-from matplotlib.ticker import MultipleLocator, FuncFormatter, NullFormatter
 
 
 PLOT_DPI = 135
