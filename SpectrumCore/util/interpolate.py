@@ -6,13 +6,12 @@ def _linear_with_error(wave_interp, spectrum):
     y = spectrum[:, 1]
     y_err = spectrum[:, 2]
 
-    are_errors = np.any(y_err)
-
     lower_mask = x[0] < wave_interp
     upper_mask = wave_interp < x[-1]
     total_mask = lower_mask * upper_mask
     x_check = wave_interp[total_mask]
 
+    # Flux
     y_new = np.zeros_like(wave_interp)
     y_new[~lower_mask] = y[0]
     y_new[~upper_mask] = y[-1]
@@ -26,9 +25,8 @@ def _linear_with_error(wave_interp, spectrum):
     dx = x_check - x[ind_lower]
     y_new[total_mask] = y[ind_lower] + dx * slope
 
+    # Error
     y_var_new = np.zeros_like(wave_interp)
-    if not are_errors:
-        return y_new, y_var_new
 
     y_var = y_err**2
     y_var_new[~lower_mask] = y_var[0]
@@ -52,11 +50,11 @@ def _linear_with_error(wave_interp, spectrum):
         y_var[ind_upper][upper_err_mask] + \
         upper_dx[upper_err_mask]**2 * slope_var[upper_err_mask]
 
-    return y_new, y_var_new
+    return y_new, np.sqrt(y_var_new)
 
 
 def interp_linear(wave_interp, spectrum):
-    if spectrum.shape == 3:
+    if spectrum.shape[1] == 3:
         return _linear_with_error(wave_interp, spectrum)
     else:
         return np.interp(wave_interp, spectrum[:, 0], spectrum[:, 1])
