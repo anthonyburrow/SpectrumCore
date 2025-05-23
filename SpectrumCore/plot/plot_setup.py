@@ -1,38 +1,74 @@
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 
 
-PLOT_DPI = 135
+def set_plot_properties():
+    # Figure
+    mpl.rcParams['figure.figsize'] = (6.4, 4.8)
+    mpl.rcParams['figure.dpi'] = 135
+    mpl.rcParams['figure.autolayout'] = False
+
+    # Axes and Ticks
+    tick_fontsize = 12
+    tick_major_length = 5
+    tick_minor_length = 2.5
+    label_fontsize = 13
+
+    mpl.rcParams['axes.labelsize'] = label_fontsize
+
+    mpl.rcParams['xtick.direction'] = 'in'
+    mpl.rcParams['xtick.top'] = True
+    mpl.rcParams['xtick.major.top'] = True
+    mpl.rcParams['xtick.minor.top'] = True
+    mpl.rcParams['xtick.labelsize'] = tick_fontsize
+    mpl.rcParams['xtick.major.size'] = tick_major_length
+    mpl.rcParams['xtick.minor.size'] = tick_minor_length
+
+    mpl.rcParams['ytick.direction'] = 'in'
+    mpl.rcParams['ytick.right'] = True
+    mpl.rcParams['ytick.major.right'] = True
+    mpl.rcParams['ytick.minor.right'] = True
+    mpl.rcParams['ytick.labelsize'] = tick_fontsize
+    mpl.rcParams['ytick.major.size'] = tick_major_length
+    mpl.rcParams['ytick.minor.size'] = tick_minor_length
+
+    # Lines
+    mpl.rcParams['lines.linewidth'] = 1
+    mpl.rcParams['lines.markersize'] = 3.5
+    mpl.rcParams['lines.markeredgewidth'] = 1
+
+    # Legend
+    mpl.rcParams['legend.frameon'] = False
+    mpl.rcParams['legend.fontsize'] = label_fontsize - 1
+
+    # Fonts
+    mpl.rcParams['font.family'] = 'serif'
+    mpl.rcParams['mathtext.fontset'] = 'dejavuserif'
 
 
 # Setup functions
 def basic_spectrum():
-    fig, ax = plt.subplots(dpi=PLOT_DPI)
+    set_plot_properties()
+
+    fig, ax = plt.subplots()
 
     ax.grid(which='both', axis='x')
-
-    ax.tick_params(axis='both', which='both', direction='in',
-                   top=True, right=True)
 
     return fig, ax
 
 
 def residual_spectrum():
-    fig = plt.figure(dpi=PLOT_DPI)
+    set_plot_properties()
+
+    fig = plt.figure()
 
     ax = fig.add_axes([0.15, 0.3, 0.8, 0.6])
     ax_res = fig.add_axes([0.15, 0.15, 0.8, 0.15])
+    ax_res.sharex(ax)
 
-    # Main axis
     ax.grid(which='both', axis='x')
 
-    ax.tick_params(axis='both', which='both', direction='in',
-                   top=True, right=True)
-
-    # Residual axis
     ax_res.grid(which='both', axis='x')
-
-    ax_res.tick_params(axis='both', which='both', direction='in',
-                       top=True, right=True)
 
     return fig, ax, ax_res
 
