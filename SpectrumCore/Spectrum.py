@@ -187,6 +187,10 @@ class Spectrum:
         return self.data[:, 1]
 
     @property
+    def flux_denormalized(self):
+        return self.data[:, 1] * self._flux_norm
+
+    @property
     def error(self):
         if self.has_error:
             return self.data[:, 2]
