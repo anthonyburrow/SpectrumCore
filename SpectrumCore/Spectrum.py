@@ -6,20 +6,37 @@ from .physics.telluric import telluric_features
 from .physics.deredden import deredden_ccm
 
 
+wave_conversion = {
+    'angstrom': 1e0,
+    'angstroms': 1e0,
+    'micron': 1e4,
+    'microns': 1e4,
+}
+
+
 class Spectrum:
 
-    def __init__(self, data: np.ndarray | str):
+    def __init__(
+        self, data: np.ndarray | str, wave_unit: str = None, *args, **kwargs
+    ):
         if isinstance(data, str):
             self.data = read(data)
         else:
             self.data = data
+
+        if wave_unit is None:
+            wave_unit = 'angstrom'
+        self.wave_factor = wave_conversion[wave_unit]
+        self.data[:, 0] *= self.wave_factor
 
         self.has_error = self.data.shape[1] == 3
 
         self._flux_norm = 1.
         self._orig_wave_scale = None
 
-    def normalize_flux(self, method: str = None, wave_range: tuple[float] = None):
+    def normalize_flux(
+        self, method: str = None, wave_range: tuple[float] = None
+    ):
         if wave_range is None:
             flux = self.flux
         else:
@@ -55,8 +72,9 @@ class Spectrum:
         n_cols = 3 if self.has_error else 2
         data_ends = np.zeros((n_bins + 1, n_cols))
 
-        data_ends[:, 0], bin_size = \
-            np.linspace(self.wave_start, self.wave_end, n_bins + 1, retstep=True)
+        data_ends[:, 0], bin_size = np.linspace(
+            self.wave_start, self.wave_end, n_bins + 1, retstep=True
+        )
 
         data_DS = np.zeros((n_bins, n_cols))
         data_DS[:, 0] = 0.5 * (data_ends[:-1, 0] + data_ends[1:, 0])
@@ -111,7 +129,9 @@ class Spectrum:
         return self.data[self.mask_between(wave_range)]
 
     def mask_between(self, wave_range: tuple[float]) -> np.ndarray:
-        mask = (wave_range[0] <= self.wave) & (self.wave <= wave_range[1])
+        wave_start = wave_range[0] * self.wave_factor
+        wave_end = wave_range[1] * self.wave_factor
+        mask = (wave_start <= self.wave) & (self.wave <= wave_end)
         return mask
 
     def remove_nans(self):
