@@ -17,7 +17,12 @@ wave_conversion = {
 class Spectrum:
 
     def __init__(
-        self, data: np.ndarray | str, wave_unit: str = None, *args, **kwargs
+        self,
+        data: np.ndarray | str,
+        wave_unit: str | None = None,
+        flux_unit: str | None = None,
+        *args,
+        **kwargs,
     ):
         if isinstance(data, str):
             self.data = read(data)
@@ -29,10 +34,23 @@ class Spectrum:
         self.wave_factor = wave_conversion[wave_unit]
         self.data[:, 0] *= self.wave_factor
 
+        if flux_unit == 'Jy':
+            self.convert_Jy_to_Flambda()
+
         self.has_error = self.data.shape[1] == 3
 
         self._flux_norm = 1.
         self._orig_wave_scale = None
+
+    def convert_Jy_to_Flambda(self):
+        '''
+        Convert F_nu to F_lambda. Wavelength is in Angstroms, F_nu is in Jy.
+
+        erg/s/cm^2/A = \
+            [Jy] (10^-23 erg/s/cm^2/Hz / Jy) * [cm/s] / ([A] 1e-8 cm / A)^2
+        '''
+        c = 2.99792458e10
+        self.data[:, 1] = self.flux * c * 1e-23 * 1e8 / self.wave**2
 
     def normalize_flux(
         self, method: str = None, wave_range: tuple[float] = None
