@@ -4,6 +4,7 @@ from .io import read
 from .util.interpolate import interp_linear
 from .physics.telluric import telluric_features
 from .physics.deredden import deredden_ccm
+from .processing.smooth import smooth
 
 
 wave_conversion = {
@@ -136,6 +137,9 @@ class Spectrum:
             data_DS[:, 2] = np.sqrt(data_DS[:, 2]) / lam_dlam
 
         self.data = data_DS
+
+    def smooth(self, *args, **kwargs):
+        self.data = smooth(self.data, *args, **kwargs)
 
     def add_flux(self, flux):
         self.data[:, 1] += flux
